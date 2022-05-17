@@ -1,0 +1,72 @@
+HOW-TO:
+1. Code running: The code can be easily run within testproject.py. The following varient can be changed to enter diffrent input:
+
+line11: sd = dt.datetime(2008,1,1)           #datetime:set up in sample starting time
+line12: ed = dt.datetime(2009,12,31)         #datetime:set up in sample ending time
+
+line14: symbol = 'JPM'                       #String: set up targeted stock symbol
+
+line16: sd_os=dt.datetime(2010, 1, 1)        #datetime: set up out-of sample starting time
+line17: ed_os=dt.datetime(2011,12,31)        #datetime: set up out-of sample ending time
+
+Once the variant above are set, click run in pycharm and the corresponding charts will be generated in /data file. Meanwhile, all the data (cumulative returns, daily return means and standard deviations, different impacts' portfolio cumulative returns, standard deviations) used in project 8 report will be printed out.
+
+
+2. Tune hyperparameters in learners.
+
+  A: StrategyLearner Tuning:
+All the parameters being tuned in strategylearners can be found within __init__ function.
+
+line64        self.bags = 40                 #int: bag size in the baglearner
+line65        self.leaf_size = 10            #int: leaf size in the rtlearner
+line66        self.YSELL = -0.05             #float: tune sell signal for stock
+line67        self.YBUY = 0.03               #float: tune buy signal for stock
+line68        self.days_y = 14               #int: look forward window for stock price to calculate N-day return for future generation of trading signal
+line69        self.day_sma = 10              #int: lookback time window for sma indicator
+line70        self.day_bb = 10               #int: lookback time window for bb indicator
+line71        self.day_m = 17                #int: lookback time window for momentum indicator
+
+
+  B: ManualStrategy Tuning:
+Parameters being tunned in the file are hidden withing the followig two lines:
+
+line37 code:        if sma_id.iloc[i] < -0.003 and bb.iloc[i] < 0.3 and momentum.iloc[i] > -0.02:
+            
+line39 code:        elif sma_id.iloc[i] > 0.00 and bb.iloc[i] > -0.3 and momentum.iloc[i] < 0.02:
+
+These six float numbers in these two lines can be tuned to change the trading signals of manual strategy. Basically they are the boundary values that we set to give different signals in terms of buy or sell.
+            
+
+=========================================student id=596568372==============================================================================================================================
+
+
+File description:
+
+BagLearner.py
+copied from project 3, execute multiple learners and return mode values of the predicted y.
+
+
+RTLearner.py
+copied from project 3, generate a random decision tree, train and return predicted y 
+
+StrategyLearner.py
+A class packaging the baglearner(input RT learner) inside, input a stock symbol, time period. A trading strategy is trained based on three indicators(packaged inside indicators.py) and stock prices. A trading strategy is returned in the form of trading table dataframe.
+
+ManualStrategy.py
+A file execute a mannally designed stock trading strategy. Same indicators are chosen as those in StrategyLearner. It will return a trading table dataframe based on the parameter set mannually within this file.
+
+indicators.py
+Five stock trading indicators functions are prepared, including sma, bb, momentum, etc.
+
+marketsimcode.py
+It will input a trading table, start value, commissions, impact and return a portfolio value dataframe accordingly
+
+experiment1.py
+Contain the code to fullfil the project requirements, such as codes of benchmark, manual strategy, and strategy learner comparison, both in-sample and out-of-sample and plot charts accordingly.
+
+experiment2.py
+contain an impact() function to generate a portfolio chart of different impacts values. Meanwhile the standard deviation and cumulative returns of each portfolios will be returned. 
+
+testproject.py
+
+Contain all the commands to generate all the data and charts required in the project in one click.
